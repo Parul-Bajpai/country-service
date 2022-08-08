@@ -18,7 +18,7 @@ Spring Boot Service
 
 Api Docs:-
 
-http://localhost:8080/api/countries/
+http://localhost:8080/api/countries
 
 http://localhost:8080/api/countries/{name}
 

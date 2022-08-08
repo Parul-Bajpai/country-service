@@ -1,6 +1,6 @@
 package io.countries.provider.countryservice.webclient;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.countries.provider.countryservice.model.CountryData;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class RestCountryClient {
@@ -47,8 +48,8 @@ public class RestCountryClient {
         Response response = client.newCall(request).execute();
         if (ObjectUtils.isNotEmpty(response) && ObjectUtils.isNotEmpty(response.body())) {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-            String res = response.body().string();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String res = Objects.requireNonNull(response.body()).string();
             logger.info("Response :{}", res);
             TypeFactory typeFactory = mapper.getTypeFactory();
             convertResponse = mapper.readValue(res, typeFactory.constructCollectionType(List.class, CountryData.class));

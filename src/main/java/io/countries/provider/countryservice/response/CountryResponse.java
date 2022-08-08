@@ -1,14 +1,16 @@
 package io.countries.provider.countryservice.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CountryResponse {
 
     private String name;
 
     private String country_code;
 
-    private String population;
-
     private String capital;
+    private String population;
 
     private Flags flag_file_url;
 

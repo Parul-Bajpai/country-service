@@ -31,14 +31,14 @@ public class CountryServiceImpl implements CountryService {
                 for (CountryData countryData : countriesConvertResponse) {
                     countryResponse.setName(countryData.getName().getCommon());
                     countryResponse.setCountry_code(countryData.getCountryCode());
+                    countryResponse.setCapital(ArrayUtils.isNotEmpty(countryData.getCapital()) ? countryData.getCapital()[0] : "");
                     countryResponse.setPopulation(countryData.getPopulation());
                     countryResponse.setFlag_file_url(countryData.getFlags());
-                    countryResponse.setCapital(ArrayUtils.isNotEmpty(countryData.getCapital())?countryData.getCapital()[0]:"");
                 }
             }
         }catch(Exception e)
         {
-            logger.error("Exception occurred while calling country info :",e);
+            logger.error("Exception occurred while calling country info", e);
         }
 
         return countryResponse;
@@ -66,7 +66,7 @@ public class CountryServiceImpl implements CountryService {
 
         }catch(Exception e)
         {
-            logger.error("Exception occurred while calling country info: ",e);
+            logger.error("Exception occurred while calling country info :", e);
         }
         return countriesResponse;
     }

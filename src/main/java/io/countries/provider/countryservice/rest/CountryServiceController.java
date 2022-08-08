@@ -2,6 +2,7 @@ package io.countries.provider.countryservice.rest;
 
 import io.countries.provider.countryservice.response.CountriesResponse;
 import io.countries.provider.countryservice.response.CountryResponse;
+import io.countries.provider.countryservice.service.CountryService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +10,10 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.*;
-
-import io.countries.provider.countryservice.service.CountryService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @Component
@@ -27,14 +29,14 @@ public class CountryServiceController {
         this.countryService = countryService;
     }
 
-    @GetMapping("/countries/")
+    @GetMapping("/countries")
     public ResponseEntity<CountriesResponse> getAllCountriesData() {
         CountriesResponse countryResponse = null;
         try {
-                logger.info(" getAllCountriesData ");
-                countryResponse = countryService.getCountriesData();
-                logger.info("Response received Applicable Size");
-                return new ResponseEntity<>(countryResponse, HttpStatus.OK);
+            logger.info("List of all the countries: ");
+            countryResponse = countryService.getCountriesData();
+            logger.info("Response received Applicable Size");
+            return new ResponseEntity<>(countryResponse, HttpStatus.OK);
 
         } catch (Exception e) {
 
