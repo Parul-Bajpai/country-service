@@ -1,18 +1,15 @@
 package io.countries.provider.countryservice.rest;
 
-import io.countries.provider.countryservice.model.CountryResponse;
-import io.countries.provider.countryservice.request.CountryRequest;
+import io.countries.provider.countryservice.response.CountriesResponse;
+import io.countries.provider.countryservice.response.CountryResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.countries.provider.countryservice.service.CountryService;
 
@@ -24,21 +21,41 @@ import io.countries.provider.countryservice.service.CountryService;
 public class CountryServiceController {
     private final static Logger logger = LoggerFactory.getLogger(CountryServiceController.class);
 
-    @Autowired
-    private CountryService countryService;
+    private final CountryService countryService;
 
-    @PostMapping("/getCountries")
-    public ResponseEntity<CountryResponse> getAllCountriesData(@RequestBody CountryRequest countryRequest) {
-        CountryResponse countryResponse;
+    public CountryServiceController(CountryService countryService) {
+        this.countryService = countryService;
+    }
+
+    @GetMapping("/countries/")
+    public ResponseEntity<CountriesResponse> getAllCountriesData() {
+        CountriesResponse countryResponse = null;
         try {
-                logger.info("Input: Country Name: {}", countryRequest);
-                countryResponse = countryService.getCountryData(countryRequest);
-                logger.info("Response received Applicable Size: {}");
-                return new ResponseEntity<CountryResponse>(countryResponse, HttpStatus.OK);
+                logger.info(" getAllCountriesData ");
+                countryResponse = countryService.getCountriesData();
+                logger.info("Response received Applicable Size");
+                return new ResponseEntity<>(countryResponse, HttpStatus.OK);
 
         } catch (Exception e) {
-            countryResponse =null;
-            return new ResponseEntity<CountryResponse>(countryResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+
+            return new ResponseEntity<>(countryResponse,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/countries/{name}")
+    public ResponseEntity<CountryResponse> getCountryData(@PathVariable String name ) {
+        CountryResponse countryResponse = null;
+        try {
+            if(StringUtils.isEmpty(name))
+            {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            logger.info("Input: Country Name: {}", name);
+            countryResponse = countryService.getCountryData(name);
+            return new ResponseEntity<>(countryResponse, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(countryResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

@@ -1,10 +1,12 @@
 package io.countries.provider.countryservice.service;
 
-import io.countries.provider.countryservice.model.CountryResponse;
-import io.countries.provider.countryservice.request.CountryRequest;
+import io.countries.provider.countryservice.response.CountriesResponse;
+import io.countries.provider.countryservice.response.CountryResponse;
 
 public interface CountryService {
 
-    public CountryResponse getCountryData(CountryRequest countryRequest);
+    CountryResponse getCountryData(String name);
+
+    CountriesResponse getCountriesData();
 
 }
