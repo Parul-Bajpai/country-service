@@ -51,12 +51,10 @@ public class CountryServiceImpl implements CountryService {
         List<CountryResponse> countryResponseList=new ArrayList<>();
         List<CountryData> countriesConvertResponse;
         try {
-            countriesConvertResponse=restCountryClient.getCountriesResponse("");
-            if(CollectionUtils.isNotEmpty(countriesConvertResponse))
-            {
-                for(CountryData countryData:countriesConvertResponse)
-                {
-                    CountryResponse countryResponse=new CountryResponse();
+            countriesConvertResponse = restCountryClient.getCountriesResponse("");
+            if (CollectionUtils.isNotEmpty(countriesConvertResponse)) {
+                for (CountryData countryData : countriesConvertResponse) {
+                    CountryResponse countryResponse = new CountryResponse();
                     countryResponse.setName(countryData.getName().getCommon());
                     countryResponse.setCountry_code(countryData.getCountryCode());
                     countryResponseList.add(countryResponse);
@@ -64,10 +62,14 @@ public class CountryServiceImpl implements CountryService {
                 countriesResponse.setCountries(countryResponseList);
             }
 
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             logger.error("Exception occurred while calling country info :", e);
         }
         return countriesResponse;
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void setRestCountryClient(RestCountryClient restCountryClient) {
+        this.restCountryClient = restCountryClient;
     }
 }

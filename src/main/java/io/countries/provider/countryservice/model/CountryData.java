@@ -59,4 +59,5 @@ public class CountryData {
     public void setCapital(String[] capital) {
         this.capital = capital;
     }
+
 }
